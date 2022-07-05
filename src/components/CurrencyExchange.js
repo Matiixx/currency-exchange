@@ -17,13 +17,13 @@ export default function CurrencyExchange() {
 
     const API_URL = "http://api.nbp.pl/api/exchangerates/tables/A/?format=json";
     let res = await axios.get(API_URL);
-    setExchangeRate(res.data[0].rates);
+    setExchangeRate(res.data[0]);
   });
 
   return (
     <>
       <span>Currency Exchange</span>
-      <CurrencyForm />
+      {exchangeRate && <CurrencyForm exchangeRate={exchangeRate} />}
     </>
   );
 }
