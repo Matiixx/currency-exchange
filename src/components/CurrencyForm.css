@@ -2,7 +2,12 @@
 {
   height: 90%;
   display: flex;
-  align-items: center;
-  flex-direction: column;
   justify-content: center;
+  padding-top: 30%;
+}
+
+.currency-form-center-horizontal
+{
+  display: flex;
+  flex-direction: column;
 }
