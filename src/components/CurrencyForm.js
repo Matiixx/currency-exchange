@@ -2,14 +2,11 @@ import "./CurrencyForm.css";
 import React, { useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
-import useLocalStorage from "../utils/useLocalStorage";
 
-export default function CurrencyForm() {
-  const [exchangeRate] = useLocalStorage("exchangeRate");
-
+export default function CurrencyForm({ exchangeRate }) {
   const findCurrencyByCode = (code) => {
     return (
-      exchangeRate.rates.find((r) => r.code === code) || {
+      exchangeRate?.rates.find((r) => r.code === code) || {
         currency: "zloty polski",
         code: "PLN",
         mid: 1.0,
@@ -17,7 +14,7 @@ export default function CurrencyForm() {
     );
   };
 
-  const [firstCurrency, setFirstCurrency] = useState(findCurrencyByCode("PLN"));
+  const [firstCurrency] = useState(findCurrencyByCode("PLN"));
   const [secondCurrency, setSecondCurrency] = useState(
     findCurrencyByCode("USD")
   );
@@ -26,10 +23,6 @@ export default function CurrencyForm() {
   const [secondInputValue, setSecondInputValue] = useState(
     firstInputValue * findCurrencyByCode(secondCurrency.code).mid
   );
-
-  // useEffectOnce(() => {
-  //   console.log(exchangeRate);
-  // });
 
   const handleFirstChange = (e) => {
     if (!e.value) return;
@@ -90,7 +83,7 @@ export default function CurrencyForm() {
           />
           <Dropdown
             value={secondCurrency}
-            options={exchangeRate.rates}
+            options={exchangeRate?.rates}
             optionLabel="code"
             placeholder="Select a currency"
             onChange={handleDropdownChange.bind(this)}
