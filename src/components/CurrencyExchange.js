@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useEffectOnce } from "../utils/useEffectOnce";
 import useLocalStorage from "../utils/useLocalStorage";
+import CurrencyForm from "./CurrencyForm";
 
 export default function CurrencyExchange() {
   const [exchangeRate, setExchangeRate] = useLocalStorage("exchangeRate", "");
@@ -12,15 +13,17 @@ export default function CurrencyExchange() {
   };
 
   useEffectOnce(async () => {
-    if (exchangeRate && exchangeRate.effectiveDate === getStringDate()) {
-      console.log(exchangeRate);
-      return;
-    }
+    if (exchangeRate && exchangeRate.effectiveDate === getStringDate()) return;
 
     const API_URL = "http://api.nbp.pl/api/exchangerates/tables/A/?format=json";
     let res = await axios.get(API_URL);
     setExchangeRate(res.data[0].rates);
   });
 
-  return <div>Currency Exchange</div>;
+  return (
+    <>
+      <span>Currency Exchange</span>
+      <CurrencyForm />
+    </>
+  );
 }
