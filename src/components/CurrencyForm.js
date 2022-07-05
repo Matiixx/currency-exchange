@@ -6,7 +6,7 @@ import { useEffectOnce } from "../utils/useEffectOnce";
 import useLocalStorage from "../utils/useLocalStorage";
 
 export default function CurrencyForm() {
-  const [exchangeRate, setExchangeRate] = useLocalStorage("exchangeRate");
+  const [exchangeRate] = useLocalStorage("exchangeRate");
 
   const [firstCurrency, setFirstCurrency] = useState("PLN");
   const [secondCurrency, setSecondCurrency] = useState("USD");
@@ -14,10 +14,9 @@ export default function CurrencyForm() {
   const findExchangeRateByCode = (code) => {
     return exchangeRate.rates.find((r) => r.code === code).mid;
   };
-
   const [firstInputValue, setFirstInputValue] = useState(1);
   const [secondInputValue, setSecondInputValue] = useState(() =>
-    findExchangeRateByCode("USD")
+    findExchangeRateByCode(secondCurrency)
   );
 
   useEffectOnce(() => {
@@ -25,11 +24,14 @@ export default function CurrencyForm() {
   });
 
   const handleFirstChange = (e) => {
+    if (!e.value) return;
+
+    setSecondInputValue(e.value * findExchangeRateByCode(secondCurrency));
     console.log(e.value);
   };
 
   const handleSecondChange = (e) => {
-    console.log(e.value);
+    if (e.value) console.log(e.value);
   };
 
   return (
@@ -46,7 +48,7 @@ export default function CurrencyForm() {
         currency={secondCurrency}
         onChange={handleSecondChange.bind(this)}
       />
-      <Dropdown />
+      {/* <Dropdown /> */}
     </div>
   );
 }
