@@ -1,5 +1,5 @@
 import "./CurrencyForm.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 
@@ -37,6 +37,10 @@ export default function CurrencyForm({ exchangeRate }) {
     setSecondInputValue(e.value);
     setFirstInputValue(e.value / secondCurrency.mid);
   };
+
+  useEffect(() => {
+    setSecondInputValue(firstInputValue * secondCurrency.mid);
+  }, [secondCurrency]);
 
   const handleDropdownChange = (e) => {
     setSecondCurrency(e.value);
